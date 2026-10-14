@@ -136,6 +136,21 @@ export interface PayRefund {
   payment?: Pick<PayPayment, 'id' | 'object' | 'status' | 'amount_cents' | 'refunded_cents'>
 }
 
+/**
+ * A dispute: `open` until the buyer's bank decides, then `won`, `lost`, or
+ * `closed` (a mere information request, nothing debited). The disputed amount
+ * is debited from the Pay account when the dispute opens and credited back if
+ * it is won. A disputed payment can no longer be refunded.
+ */
+export interface PayDispute {
+  status: 'open' | 'won' | 'lost' | 'closed'
+  amount_cents: number
+  /** The deadline for your evidence. */
+  evidence_due_at: string | null
+  debited_cents: number
+  recredited_cents: number
+}
+
 export interface PayPayment {
   id: string
   object: 'pay.payment'
@@ -154,6 +169,8 @@ export interface PayPayment {
   customer_name: string | null
   payment_method: string | null
   disputed: boolean
+  /** The buyer's dispute, null without one. */
+  dispute: PayDispute | null
   failure_message: string | null
   livemode: boolean
   created_at: string

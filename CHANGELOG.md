@@ -2,6 +2,10 @@
 
 All notable changes to `@myadion/sdk` are listed here. The project follows [Semantic Versioning](https://semver.org/); before 1.0, a minor version may break compatibility.
 
+## 0.3.0 - unreleased
+
+- Adion Pay disputes: `PayPayment.dispute` (`PayDispute`: `status` `open`, `won`, `lost` or `closed`, `amount_cents`, `evidence_due_at`, `debited_cents`, `recredited_cents`). The disputed amount is debited from the Pay account when the dispute opens and credited back if it is won; `net_cents` accounts for it. A disputed payment can no longer be refunded (409).
+
 ## 0.2.0 - 2026-10-14
 
 - Adion Pay embedded form: `ui_mode` (`hosted` or `embedded`) and `return_url` when creating a session; an embedded session comes back with its own `client_secret` and no `url`. Your page hands the `client_secret` to `https://pay.adioncloud.com/v1/adion-pay.js`. `PaySessionCreateParams` is now a union of `PayHostedSessionCreateParams` and `PayEmbeddedSessionCreateParams`.

@@ -48,7 +48,7 @@ describe('authentication', () => {
     expect(form.get('scope')).toBe('pay.session.write pay.payment.read')
     const echo = api.calls('/api/echo')
     expect(echo[0]?.headers.authorization).toMatch(/^Bearer tok_1_/)
-    expect(echo[0]?.headers['user-agent']).toMatch(/^myadion-node\/0\.2\.0 node\//)
+    expect(echo[0]?.headers['user-agent']).toMatch(/^myadion-node\/0\.3\.0 node\//)
   })
 
   it('renews a token close to expiry', async () => {
