@@ -42,14 +42,11 @@ export interface RequestOptions {
 
 export type Metadata = Record<string, string>
 
-export interface PaySessionCreateParams {
+interface PaySessionBaseParams {
   /** Amount in cents, VAT included (100 to 99 999 900). */
   amount_cents: number
   /** What the buyer reads, 500 characters at most. */
   description: string
-  /** The https address the buyer returns to after paying. */
-  success_url: string
-  cancel_url?: string | null
   currency?: 'eur' | null
   /** Your reference (order number), 120 characters at most. */
   reference?: string | null
@@ -61,10 +58,35 @@ export interface PaySessionCreateParams {
   pay_account_id?: string | null
 }
 
+/** The buyer pays on Adion's payment page (`url`), then returns to `success_url`. */
+export interface PayHostedSessionCreateParams extends PaySessionBaseParams {
+  ui_mode?: 'hosted' | null
+  /** The https address the buyer returns to after paying. */
+  success_url: string
+  cancel_url?: string | null
+}
+
+/**
+ * Embedded form: no redirect. The session comes back with its own
+ * `client_secret`, that your page hands to https://pay.adioncloud.com/v1/adion-pay.js.
+ * The form only shows on the origins declared on the Pay account.
+ */
+export interface PayEmbeddedSessionCreateParams extends PaySessionBaseParams {
+  ui_mode: 'embedded'
+  /** Where the buyer goes once paid (with `session_id`), if your page has no `onComplete`. */
+  return_url?: string | null
+}
+
+export type PaySessionCreateParams = PayHostedSessionCreateParams | PayEmbeddedSessionCreateParams
+
 export interface PaySession {
   id: string
   object: 'pay.session'
-  url: string
+  /** The payment page; null for an embedded session. */
+  url: string | null
+  ui_mode: 'hosted' | 'embedded'
+  /** Embedded sessions only: opens this session in the embedded form, expires with it. Never in a webhook. */
+  client_secret?: string
   status: 'open' | 'complete' | 'expired'
   amount_cents: number
   currency: string
@@ -72,8 +94,9 @@ export interface PaySession {
   reference: string | null
   metadata: Metadata
   customer_email: string | null
-  success_url: string
+  success_url: string | null
   cancel_url: string | null
+  return_url: string | null
   pay_account_id: string
   payment_id: string | null
   payment_status: PayPaymentStatus | null

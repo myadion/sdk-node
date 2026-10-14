@@ -2,6 +2,10 @@
 
 All notable changes to `@myadion/sdk` are listed here. The project follows [Semantic Versioning](https://semver.org/); before 1.0, a minor version may break compatibility.
 
+## 0.2.0 - 2026-10-14
+
+- Adion Pay embedded form: `ui_mode` (`hosted` or `embedded`) and `return_url` when creating a session; an embedded session comes back with its own `client_secret` and no `url`. Your page hands the `client_secret` to `https://pay.adioncloud.com/v1/adion-pay.js`. `PaySessionCreateParams` is now a union of `PayHostedSessionCreateParams` and `PayEmbeddedSessionCreateParams`.
+
 ## 0.1.0 - 2026-10-14
 
 First release.

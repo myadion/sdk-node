@@ -52,6 +52,34 @@ res.redirect(303, session.url)
 
 Payé, l'acheteur revient sur `success_url?session_id=pay_sess_…`. Ce retour ne prouve rien : attendez le webhook `payment.succeeded`, ou relisez la session.
 
+#### Formulaire de paiement intégré
+
+Pour garder l'acheteur sur votre page, créez la session avec `ui_mode: 'embedded'`. Elle n'a pas d'`url`, mais un `client_secret` à elle que votre page passe au script d'Adion ; le formulaire de carte vit dans une iframe servie par `pay.adioncloud.com`, les données de carte ne passent jamais par votre page. `return_url` remplace `success_url` et `cancel_url`. Déclarez d'abord l'origine de votre page (espace client › compte Pay › onglet Intégration).
+
+```ts
+const session = await myadion.pay.sessions.create({
+  amount_cents: 4990,
+  description: 'Commande 4521',
+  reference: 'CMD-4521',
+  ui_mode: 'embedded',
+  return_url: 'https://boutique.example.com/commande/4521/merci',
+})
+res.json({ clientSecret: session.client_secret })
+```
+
+```html
+<div id="paiement"></div>
+<script src="https://pay.adioncloud.com/v1/adion-pay.js"></script>
+<script type="module">
+  const { clientSecret } = await (await fetch('/paiement/session', { method: 'POST' })).json()
+  const checkout = await AdionPay().initEmbeddedCheckout({ clientSecret, onComplete: () => location.assign('/commande/4521/merci') })
+  checkout.mount('#paiement')
+</script>
+```
+
+Le `client_secret` n'ouvre que cette session, et expire avec elle. Comme pour la redirection, `onComplete` ne prouve rien : le webhook `payment.succeeded` fait foi.
+
+
 ```ts
 // Tous les paiements, page après page
 for await (const payment of myadion.pay.payments.list({ status: 'succeeded' })) {

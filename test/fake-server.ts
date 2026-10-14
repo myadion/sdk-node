@@ -139,7 +139,10 @@ export class FakeApi {
       const amount = body.amount_cents
       if (typeof amount !== 'number' || amount < 100 || amount > 99_999_900) errors.amount_cents = ['Le montant va d’un euro à 999 999 €.']
       if (typeof body.description !== 'string' || body.description === '') errors.description = ['Le champ description est obligatoire.']
-      if (typeof body.success_url !== 'string' || !body.success_url.startsWith('https://')) errors.success_url = ['Le champ success url doit être une adresse https.']
+      const embedded = body.ui_mode === 'embedded'
+      if (embedded && body.success_url !== undefined) errors.success_url = ['Le champ success url est interdit quand ui mode vaut embedded.']
+      else if (!embedded && (typeof body.success_url !== 'string' || !body.success_url.startsWith('https://'))) errors.success_url = ['Le champ success url doit être une adresse https.']
+      if (!embedded && body.return_url !== undefined) errors.return_url = ['Le champ return url est interdit sauf si ui mode vaut embedded.']
       const first = Object.values(errors)[0]
       if (first) return send(422, errorBody(422, first[0] ?? '', errors))
       const key = (headers['idempotency-key'] ?? '').trim()
@@ -151,12 +154,14 @@ export class FakeApi {
       }
       const id = randomId('pay_sess_')
       const session = {
-        id, object: 'pay.session', url: `https://pay.example.test/${id.slice(9)}`, status: 'open',
+        id, object: 'pay.session', url: embedded ? null : `https://pay.example.test/${id.slice(9)}`,
+        ui_mode: embedded ? 'embedded' : 'hosted', status: 'open',
         amount_cents: amount, currency: 'eur', description: body.description, reference: body.reference ?? null,
-        metadata: body.metadata ?? {}, customer_email: body.customer_email ?? null, success_url: body.success_url,
-        cancel_url: body.cancel_url ?? null, pay_account_id: 'pay_acct_TestAccount01', payment_id: null,
+        metadata: body.metadata ?? {}, customer_email: body.customer_email ?? null, success_url: body.success_url ?? null,
+        cancel_url: body.cancel_url ?? null, return_url: body.return_url ?? null, pay_account_id: 'pay_acct_TestAccount01', payment_id: null,
         payment_status: null, livemode: false, expires_at: '2026-10-15T10:00:00+00:00', completed_at: null,
         created_at: '2026-10-14T10:00:00+00:00',
+        ...(embedded ? { client_secret: `${id.slice(9, 19)}_secret_${'A'.repeat(32)}` } : {}),
       }
       this.sessions.set(id, session)
       if (key) this.idempotency.set(key, { hash, id })

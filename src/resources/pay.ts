@@ -16,7 +16,11 @@ import type {
 } from '../types.js'
 import { path } from './path.js'
 
-/** Payment sessions: the buyer pays on Adion's payment page, then comes back to `success_url`. */
+/**
+ * Payment sessions: the buyer pays on Adion's payment page, then comes back to
+ * `success_url`; or, with `ui_mode: 'embedded'`, in your own page through the
+ * embedded form (the session's `client_secret`).
+ */
 export class SessionsResource {
   constructor(private readonly client: MyAdion) {}
 

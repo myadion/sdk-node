@@ -48,7 +48,7 @@ describe('authentication', () => {
     expect(form.get('scope')).toBe('pay.session.write pay.payment.read')
     const echo = api.calls('/api/echo')
     expect(echo[0]?.headers.authorization).toMatch(/^Bearer tok_1_/)
-    expect(echo[0]?.headers['user-agent']).toMatch(/^myadion-node\/0\.1\.0 node\//)
+    expect(echo[0]?.headers['user-agent']).toMatch(/^myadion-node\/0\.2\.0 node\//)
   })
 
   it('renews a token close to expiry', async () => {
@@ -129,6 +129,19 @@ describe('retries', () => {
     expect(calls).toHaveLength(2)
     expect(calls[0]?.headers['idempotency-key']).toMatch(/^myadion-node-/)
     expect(calls[1]?.headers['idempotency-key']).toBe(calls[0]?.headers['idempotency-key'])
+  })
+
+  it('creates an embedded session with its own client_secret and no url', async () => {
+    const session = await client().pay.sessions.create({
+      amount_cents: 4990,
+      description: 'Order 4521',
+      ui_mode: 'embedded',
+      return_url: 'https://shop.example.com/orders/4521/thanks',
+    })
+    expect(session.ui_mode).toBe('embedded')
+    expect(session.url).toBeNull()
+    expect(session.return_url).toBe('https://shop.example.com/orders/4521/thanks')
+    expect(session.client_secret).toMatch(/^[A-Za-z0-9]{10}_secret_[A-Za-z0-9]{32}$/)
   })
 
   it('never retries a refund after a server error', async () => {
