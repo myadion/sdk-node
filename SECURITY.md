@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Please do not open a public issue for a security problem. Write to **hello@myadion.com**, with "Security" in the subject, a description, the affected version and, if you can, the steps to reproduce. We acknowledge every report and keep you informed until it is fixed.
+Please do not open a public issue for a security problem. Write to **help@myadion.com**, with "Security" in the subject, a description, the affected version and, if you can, the steps to reproduce. We acknowledge every report and keep you informed until it is fixed.
 
 ## Supported versions
 

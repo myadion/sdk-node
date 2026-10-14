@@ -232,7 +232,7 @@ The tests run against a fake API served locally (`test/fake-server.ts`); they ne
 
 - Guides: [docs.myadion.com](https://docs.myadion.com/api/bibliotheques)
 - API reference: [adion-api.eu](https://adion-api.eu)
-- PHP library: [myadion/adion-php](https://github.com/myadion/adion-php)
+- PHP library: [myadion/sdk-php](https://github.com/myadion/sdk-php)
 - Security: see [SECURITY.md](SECURITY.md)
 
 ## License

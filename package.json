@@ -12,16 +12,16 @@
     "api",
     "sdk"
   ],
-  "homepage": "https://github.com/myadion/adion-node#readme",
+  "homepage": "https://github.com/myadion/sdk-node#readme",
   "bugs": {
-    "url": "https://github.com/myadion/adion-node/issues"
+    "url": "https://github.com/myadion/sdk-node/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/myadion/adion-node.git"
+    "url": "git+https://github.com/myadion/sdk-node.git"
   },
   "license": "MIT",
-  "author": "Adion <hello@myadion.com> (https://myadion.com)",
+  "author": "Adion <help@myadion.com> (https://myadion.com)",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
