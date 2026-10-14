@@ -1,0 +1,74 @@
+{
+  "name": "@myadion/sdk",
+  "version": "0.1.0",
+  "description": "Official Node.js library for the Adion Cloud API: Adion Pay, SMS and every other endpoint.",
+  "keywords": [
+    "adion",
+    "myadion",
+    "adion cloud",
+    "adion pay",
+    "payments",
+    "sms",
+    "api",
+    "sdk"
+  ],
+  "homepage": "https://github.com/myadion/adion-node#readme",
+  "bugs": {
+    "url": "https://github.com/myadion/adion-node/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myadion/adion-node.git"
+  },
+  "license": "MIT",
+  "author": "Adion <hello@myadion.com> (https://myadion.com)",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.fr.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "unit": "vitest run",
+    "test": "npm run typecheck && npm run lint && npm run unit && npm run build && node test/smoke.cjs && node test/smoke.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^18.19.0",
+    "eslint": "^10.12.0",
+    "tsup": "^8.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vitest": "^3.2.0"
+  }
+}
