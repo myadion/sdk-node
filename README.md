@@ -258,7 +258,7 @@ The tests run against a fake API served locally (`test/fake-server.ts`); they ne
 
 ## Links
 
-- Guides: [docs.myadion.com](https://docs.myadion.com/api/bibliotheques)
+- Guides: [docs.myadion.com](https://docs.myadion.com/api/libraries)
 - API reference: [adion-api.eu](https://adion-api.eu)
 - PHP library: [myadion/sdk-php](https://github.com/myadion/sdk-php)
 - Security: see [SECURITY.md](SECURITY.md)

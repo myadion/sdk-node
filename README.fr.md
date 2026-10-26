@@ -142,7 +142,7 @@ Les tests tournent contre une fausse API locale ; ils n'appellent jamais la vrai
 
 ## Liens
 
-- Guides : [docs.myadion.com](https://docs.myadion.com/api/bibliotheques)
+- Guides : [docs.myadion.com](https://docs.myadion.com/api/libraries)
 - Référence de l'API : [adion-api.eu](https://adion-api.eu)
 - Bibliothèque PHP : [myadion/sdk-php](https://github.com/myadion/sdk-php)
 
